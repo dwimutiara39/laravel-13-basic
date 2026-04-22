@@ -2,13 +2,14 @@
 
 namespace Database\Factories;
 
-use App\Models\Student;
+use App\Models\Departmen;
+use App\Models\lecturer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Student>
+ * @extends Factory<lecturer>
  */
-class StudentFactory extends Factory
+class LecturerFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +19,8 @@ class StudentFactory extends Factory
     public function definition(): array
     {
         return [
-        'name' => fake()->name(),
-        'nim' => fake()->numerify('###########'),
+            'name' => fake()->name(),
+            'departmen_id' => Departmen::inRandomOrder()->first()->id,
         ];
     }
 }
