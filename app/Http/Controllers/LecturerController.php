@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Departmen;
 use App\Models\Lecturer;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,10 @@ class LecturerController extends Controller
      */
     public function create()
     {
-        //
+            return view('lecturer.create', [
+            'title' => 'Create Lecturer',
+            'departmens' => Departmen::latest()->get(),
+            ]);
     }
 
     /**
@@ -31,7 +35,21 @@ class LecturerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $validated = $request->validate([
+        'name' => 'required|max:255',
+        'departmen_id' => 'required|exists:departmens,id',
+    ], [
+        'name.required' => 'Nama Tidak Boleh Kosong',
+        'name.max' => 'Nama Maksimal 255 Karakter',
+        'departmen_id.required' => 'Program Studi Tidak Boleh Kosong',
+        'departmen_id.exists' => 'Program studi yang dipilih tidak ditemukan',
+    ]
+    );
+
+    Lecturer::create($validated);
+
+    return to_route('lecturer.index')->withSuccess('Data Berhasil Ditambahkan');
     }
 
     /**
@@ -47,7 +65,11 @@ class LecturerController extends Controller
      */
     public function edit(lecturer $lecturer)
     {
-        //
+        return view('lecturer.edit', [
+            'title' => 'Edit Lecturer',
+            'departmens' => Departmen::latest()->get(),
+            'lecturer' => $lecturer,
+            ]);
     }
 
     /**
@@ -55,7 +77,18 @@ class LecturerController extends Controller
      */
     public function update(Request $request, lecturer $lecturer)
     {
-        //
+        $validated = $request->validate([
+        'name' => 'required|max:255',
+        'departmen_id' => 'required|exists:departmens,id',
+    ], [
+        'name.required' => 'Nama Tidak Boleh Kosong',
+        'name.max' => 'Nama Maksimal 255 Karakter',
+        'departmen_id.required' => 'Program Studi Tidak Boleh Kosong',
+        'departmen_id.exists' => 'Program studi yang dipilih tidak ditemukan',
+    ]);
+
+    $lecturer->update($validated);
+    return to_route('lecturer.index')->withSuccess('Data Berhasil Diubah');
     }
 
     /**
@@ -63,6 +96,7 @@ class LecturerController extends Controller
      */
     public function destroy(lecturer $lecturer)
     {
-        //
+        $lecturer->delete($lecturer);
+        return to_route('lecturer.index')->withSuccess('Data Berhasil Dihapus');
     }
 }

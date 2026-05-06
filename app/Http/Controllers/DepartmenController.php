@@ -14,7 +14,7 @@ class DepartmenController extends Controller
     {
         return view('departmen.index', [
             'title' => 'Departmen',
-            'departmen' => Departmen::latest()->get(),
+            'departmens' => Departmen::latest()->get(),
             ]);
     }
 

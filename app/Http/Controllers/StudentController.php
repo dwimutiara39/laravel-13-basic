@@ -27,9 +27,7 @@ class StudentController extends Controller
         return view('student.create', ['title' => 'Create Student']);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -45,7 +43,7 @@ class StudentController extends Controller
     );
 
     Student::create($validated);
- 
+
     return to_route('student.index')->withSuccess('Data Berhasil Ditambahkan');
     }
 
